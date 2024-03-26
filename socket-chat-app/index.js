@@ -1,9 +1,8 @@
 const express = require("express");
-const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
-const { isBooleanObject } = require("util/types");
 
+const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -15,7 +14,7 @@ io.on("connection", (socket) => {
   io.emit("connection", "a user connected");
 
   socket.on("disconnect", () => {
-    io.emit("disconnection", "A user has disconnected");
+    io.emit("chat message", "A user disconnected");
   });
 
   socket.on("chat message", (msg) => {
@@ -23,6 +22,12 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+
+
